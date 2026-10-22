@@ -1,0 +1,18 @@
+# Arquivos de configuração sensíveis — nunca vão para o GitHub
+Sistema/.env
+
+# Arquivos gerados (relatórios em PDF e DOCX)
+Relatorios_Gerados/
+
+# Pasta temporária de uploads
+Sistema/_temp_uploads/
+
+# Cache do Python
+__pycache__/
+Sistema/__pycache__/
+*.pyc
+*.pyo
+
+# Arquivos temporários do Windows
+Thumbs.db
+Desktop.ini
