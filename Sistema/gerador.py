@@ -40,7 +40,7 @@ def registrar_fontes_linux() -> None:
 
 
 def encontrar_template() -> Path:
-    templates = list(PASTA_TEMPLATES.glob("*.docx"))
+    templates = [t for t in PASTA_TEMPLATES.glob("*.docx") if not t.name.startswith("~$")]
     if not templates:
         raise FileNotFoundError(f"Nenhum template .docx encontrado em: {PASTA_TEMPLATES}")
     return templates[0]
