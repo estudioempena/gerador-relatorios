@@ -102,6 +102,18 @@ st.markdown(
         border-color: #EFEFEF !important;
         margin: 1.5rem 0 !important;
     }
+
+    /* Responsividade para celulares (Android e iOS) - evita zoom automático no Safari iOS */
+    @media (max-width: 768px) {
+        input[type="text"], input[type="password"], textarea {
+            font-size: 16px !important;
+        }
+        .block-container {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            padding-top: 1.5rem !important;
+        }
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -218,7 +230,7 @@ for idx in range(st.session_state.qtd_blocos):
 
         arquivos_fotos = st.file_uploader(
             f"Fotos do Bloco {idx + 1} (Disposição em pares)",
-            type=["jpg", "jpeg", "png"],
+            type=["jpg", "jpeg", "png", "webp"],
             accept_multiple_files=True,
             key=f"fotos_{idx}",
         )
@@ -267,14 +279,13 @@ if st.button("🚀 Gerar Relatório Completo (DOCX + PDF)", type="primary", use_
                 fotos_processadas = []
                 for f_idx, f_info in enumerate(b["fotos"]):
                     arq = f_info["arquivo"]
-                    caminho_salvo = pasta_temp / arq.name
+                    caminho_salvo = pasta_temp / f"foto_{b_idx}_{f_idx}.jpg"
 
                     with Image.open(arq) as img_raw:
                         img_ok = ImageOps.exif_transpose(img_raw)
-                        fmt = img_raw.format or "JPEG"
-                        if fmt == "JPEG" and img_ok.mode in ("RGBA", "P"):
+                        if img_ok.mode != "RGB":
                             img_ok = img_ok.convert("RGB")
-                        img_ok.save(caminho_salvo, format=fmt, quality=95)
+                        img_ok.save(caminho_salvo, format="JPEG", quality=95)
 
                     legenda_texto = f_info["legenda"].strip()
                     if not legenda_texto:
